@@ -4,9 +4,9 @@ import argparse
 
 logging.basicConfig(level=logging.INFO)
 
-def receive_messages(node_id):
+def receive_messages(node_id, port):
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-        s.bind(('', 12345))
+        s.bind(('', port))
         while True:
             data, addr = s.recvfrom(1024)
             message = data.decode()
@@ -15,6 +15,7 @@ def receive_messages(node_id):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Run a node in the distributed system.')
     parser.add_argument('--node_id', type=str, required=True, help='Unique identifier for the node.')
+    parser.add_argument('--port', type=int, default=12345, help='Port number for the node.')
     args = parser.parse_args()
 
-    receive_messages(args.node_id)
+    receive_messages(args.node_id, args.port)
