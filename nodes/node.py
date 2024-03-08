@@ -1,14 +1,13 @@
 import socket
 import threading
 import logging
-from network_analyzer import analyze_packet  # Modified import statement
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def receive_messages():
     """
-    Start listening for messages and analyze them.
+    Start listening for messages and log them.
     """
     # Create a UDP socket
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
@@ -19,8 +18,6 @@ def receive_messages():
             while True:
                 # Wait for a message
                 data, addr = s.recvfrom(1024)
-                packet = IP(data)
-                analyze_packet(packet)
                 message = data.decode()
                 logging.info("Received message: %s from %s", message, addr)
                 print(f"Received message: {message} from {addr}")
