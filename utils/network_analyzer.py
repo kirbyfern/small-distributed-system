@@ -1,29 +1,38 @@
+from scapy.all import sniff, IP, UDP, TCP
 import logging
-from scapy.all import IP
 
-# Set up logging
+# Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def analyze_packet(packet):
+def packet_callback(packet):
     """
-    Analyze a packet and log its details.
+    Callback function to process packets.
     """
-    # Check if the packet has an IP layer
+    # Ensure the packet has the IP layer
     if IP in packet:
-        # Extract IP layer information
-        ip_layer = packet[IP]
+        # Extract packet details
+        src_ip = packet[IP].src
+        dst_ip = packet[IP].dst
+        proto = packet.proto
+        if proto == 17: # UDP
+            src_port = packet[UDP].sport
+            dst_port = packet[UDP].dport
+        elif proto == 6: # TCP
+            src_port = packet[TCP].sport
+            dst_port = packet[TCP].dport
+        else:
+            src_port = None
+            dst_port = None
 
-        # Extract common fields
-        packet_type = packet.getlayer(0).name
-        source_ip = ip_layer.src
-        destination_ip = ip_layer.dst
-        protocol = ip_layer.proto
+        # Calculate length and flags
         length = len(packet)
+        flags = None
+        if TCP in packet:
+            flags = packet[TCP].flags
 
-        # Note: Scapy's IP layer does not have a 'flags' attribute, so this is removed.
-        # If you need to analyze specific protocols (like TCP or ICMP) for flags, you'd access those layers separately.
+        # Print packet details
+        logging.info(f"Type: {proto} | Time: {packet.time} | Source IP: {src_ip} | Destination IP: {dst_ip} | Source Port: {src_port} | Destination Port: {dst_port} | Protocol: {proto} | Length: {length} bytes | Flags: {flags}")
 
-        # Log the extracted information
-        logging.info(f"Type: {packet_type} | Source IP: {source_ip} | Destination IP: {destination_ip} | Protocol: {protocol} | Length: {length}")
-    else:
-        logging.warning(f"Packet does not contain IP layer: {packet.summary()}")
+if __name__ == "__main__":
+    # Start sniffing packets
+    sniff(prn=packet_callback, filter="udp or tcp", store=0)
