@@ -9,7 +9,7 @@ def broadcast_message(message):
         #  Enable broadcasting
         s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         # Broadcast the message
-        s.sendto(message.encode(), ('<broadcast>', 12345))
+        s.sendto(message.encode(), ('255.255.255.255', 12345))
         # Whenever a message being sent
         logging.info("Message sent: %s", message)
 
