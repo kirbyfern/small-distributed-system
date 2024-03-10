@@ -73,7 +73,7 @@ To ensure that your network analysis scripts can communicate effectively, you ma
 - [Docker containers using ipc sockets](https://medium.com/techanic/docker-containers-ipc-using-sockets-part-2-834e8ea00768)
 - [Multi threaded tcp server](https://medium.com/@srbentley/python-multi-threaded-tcp-server-and-client-in-docker-492a0e3a075)
 - [Tried creating one network for all nodes](https://docs.docker.com/network/)
-- [Python sockets for multitask using threading](https://realpython.com/python-sockets/)
+- [Python sockets for multicast using threading](https://realpython.com/python-sockets/)
 
 ## Summary
 This project is open-source intended for Networks and Distributed Systems
