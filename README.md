@@ -67,8 +67,27 @@ python3 network_analyzer.py
 To ensure that your network analysis scripts can communicate effectively, you may need to configure your firewall to allow traffic on specific ports. The exact steps depend on your operating system and firewall software. Generally, you would need to add rules to allow incoming and outgoing traffic on the ports used by your scripts.
 
 ## References
+- [Python UDP Broadcast](https://stackoverflow.com/questions/40965904/python-udp-broadcast)
 - [Scapy Documentation](https://scapy.readthedocs.io/en/latest/)
 - [Docker Documentation](https://docs.docker.com/)
+- [Docker containers using ipc sockets](https://medium.com/techanic/docker-containers-ipc-using-sockets-part-2-834e8ea00768)
+- [Multi threaded tcp server](https://medium.com/@srbentley/python-multi-threaded-tcp-server-and-client-in-docker-492a0e3a075)
+- [Tried creating one network for all nodes](https://docs.docker.com/network/)
+- [Python sockets for multitask using threading](https://realpython.com/python-sockets/)
 
-##
+## Summary
 This project is open-source intended for Networks and Distributed Systems
+
+
+# Summary
+
+In my master.py, I am using UDP broadcast to send a message to all devices on the network. The key part of my code that enables broadcasting is:
+```
+s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+s.sendto(message.encode(), ('<broadcast>', 12345))
+```
+
+In node.py, I am using threading to listen for messages in the background while the main thread continues to execute other tasks. This is achieved by:
+```
+threading.Thread(target=receive_messages).start()
+```
