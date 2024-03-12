@@ -35,6 +35,7 @@
 import socket  # Module for socket operations
 import threading  # Module for threading
 import logging  # Module for logging
+import time
 
 # Configure logging settings
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -71,6 +72,13 @@ def receive_messages():
 
 # Execute if the script is run directly
 if __name__ == "__main__":
+    # Start time measurement
+    start_time = time.time()
+
     # Start a new thread for message reception
     threading.Thread(target=receive_messages).start()
 
+    # End time measurement
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print(f'Execution time: {elapsed_time} seconds')

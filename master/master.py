@@ -22,6 +22,7 @@
 
 import socket
 import logging
+import time
 from time import sleep
 
 # Configure logging settings to log messages with INFO level
@@ -36,6 +37,9 @@ def broadcast_message(message):
 
     # Encode the message to bytes
     msg = message.encode()
+
+    # Start time measurement
+    start_time = time.time()
 
     # Continuously send the message to all IP addresses in the network
     while True:
@@ -53,6 +57,11 @@ def broadcast_message(message):
                 s.sendto(msg, ("<broadcast>", 12345))
         # Introduce a 2-second delay before sending the message again
         sleep(2)
+
+    # End time measurement
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    print(f'Execution time: {elapsed_time} seconds')
 
 # Execute the following code if the script is run directly
 if __name__ == "__main__":
